@@ -8,7 +8,6 @@ def index():
     return render_template('index.html', first_name = 'Trevon', countries = countries)
 
 
-@app.route('/new')
-def new():
-    name = 'Trevon' + ' ' + 'Woods'
-    return f'This is a new route! How are you, {name}'
+@app.route('/signup')
+def signup():
+    return render_template('signup.html')
