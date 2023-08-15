@@ -4,18 +4,12 @@
 
     {% block header %}
         <h1>Hello World!</h1>
-        <h4>Welcome {{ first_name }}</h4>
-        {% if first_name == 'Trevon' %}
-            <h5>Hello</h5>
-        {% else %}
-            <h5>Goodbye</h5>
-        {% endif %}
+        <h4>Please Sign Up or Log In to use the Blog</h4>
     {% endblock header %}
 
     {% block content %}
-        {{ countries }}
-        {% for country in countries %}
-            <li>{{ country }}</li>
-        {% endfor %}
+        <div class="col-12">
+            <h5>Posts Go Here</h5>
+        </div>
     {% endblock content %}
     
