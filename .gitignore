@@ -3,3 +3,6 @@ venv/
 
 # also ignore the __pycache__
 __pycache__/
+
+# ignore the .vscode (your personal vs code settings
+.vscode/
