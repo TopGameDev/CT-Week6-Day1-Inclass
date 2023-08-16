@@ -19,6 +19,9 @@ migrate = Migrate(app, db)
 # Create an instance of LoginManager to handle authentication
 login = LoginManager(app)
 
+# Customize login process - if not logged in, redirect to login page
+login.login_view = 'login'
+
 # import all of the routes from the routes file into the current package
 from app import routes, models
 # Must be imported at the bottom of the file
