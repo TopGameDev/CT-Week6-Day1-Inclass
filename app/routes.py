@@ -7,8 +7,9 @@ from app.models import User, Post
 # Add a route
 @app.route('/')
 def index():
+    posts = db.session.execute(db.select(Post).order_by(Post.date_created.desc())).scalars().all()
     countries = ['United States', 'Canada', 'Mexico', 'France', 'Egypt', 'China']
-    return render_template('index.html', first_name = 'Trevon', countries = countries)
+    return render_template('index.html', first_name = 'Trevon', countries = countries, posts=posts)
 
 
 @app.route('/signup', methods=['GET', "POST"])
