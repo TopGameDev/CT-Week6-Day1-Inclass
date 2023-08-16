@@ -1,6 +1,6 @@
 from app import app, db
 from flask import render_template, redirect, url_for
-from app.forms import SignUpForm
+from app.forms import SignUpForm, PostForm
 from app.models import User
 
 
@@ -30,9 +30,9 @@ def signup():
             print('A user with that username already exists')
             return redirect(url_for('signup'))
         
-        # Create a new instance of the User class with the data from from
+        # Create a new instance of the User class with the data from form
         new_user = User(first_name=first_name, last_name=last_name, username=username, email=email, password=password)
-        
+
         # Add the new_user objects to the database
         db.session.add(new_user)
         db.session.commit()
@@ -42,3 +42,16 @@ def signup():
 
 
     return render_template('signup.html', form=form)
+
+
+@app.route('/create', methods=['GET', 'POST'])
+def create_post():
+    form = PostForm()
+    if form.validate_on_submit():
+        title = form.title.data
+        body = form.body.data
+        image_url = form.image_url.data or None
+        print(title, body, image_url)
+
+        return redirect(url_for('index'))
+    return render_template('create_post.html', form=form)
