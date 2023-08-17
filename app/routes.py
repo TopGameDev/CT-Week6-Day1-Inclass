@@ -29,7 +29,7 @@ def signup():
         #Check user table to see if there are any users with username or email
         check_user = db.session.execute(db.select(User).where((User.username==username) | (User.email==email))).scalar()
         if check_user:
-            flash('A user with that username and/or email already exists')
+            flash('A user with that username and/or email already exists', 'warning')
             return redirect(url_for('signup'))
         
         # Create a new instance of the User class with the data from form
@@ -38,14 +38,16 @@ def signup():
         # Add the new_user objects to the database
         db.session.add(new_user)
         db.session.commit()
-        flash(f"{new_user.username} has been created")
+        flash(f"{new_user.username} has been created", 'success')
 
         # Log the user in
         login_user(new_user)
         
-
         # Redirect to the homepage
         return redirect(url_for('index'))
+    elif form.is_submitted():
+        flash("Your passwords do not match", 'warning')
+        return redirect(url_for('signup'))
 
 
     return render_template('signup.html', form=form)
@@ -68,15 +70,18 @@ def create_post():
         db.session.add(new_post)
         db.session.commit()
 
-        flash(f"{new_post.title} has been created")
+        flash(f"{new_post.title} has been created", 'primary')
         return redirect(url_for('index'))
+    
+
+
     return render_template('create_post.html', form=form)
 
 
 @app.route('/logout')
 def logout():
     logout_user()
-    flash("You have successfully logged out")
+    flash("You have successfully logged out", 'success')
     return redirect(url_for('index'))
 
 @app.route('/login', methods=['GET', "POST"])
@@ -92,10 +97,11 @@ def login():
         if user is not None and user.check_password(password):
             # log the user in via login_user function
             login_user(user)
-            flash("You have successfully logged in")
+            flash("You have successfully logged in", 'success')
             return redirect(url_for('index'))
         else:
-            flash("Invalid Username and/or Password")
+            flash("Invalid Username and/or Password", 'danger')
             return redirect(url_for('login'))
+
 
     return render_template('login.html', form=form)
