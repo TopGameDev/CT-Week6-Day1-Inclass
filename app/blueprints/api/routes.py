@@ -2,7 +2,7 @@ from . import api
 from app import db
 from app.models import Post
 from flask import request
-from .auth import basic_auth
+from .auth import basic_auth, token_auth
 
 
 
@@ -31,6 +31,7 @@ def get_post(post_id):
 
 
 @api.route('/posts', methods=["POST"])
+@token_auth.login_required
 def create_post():
     print(request)
     # Check to see that the request body is JSON
@@ -53,8 +54,10 @@ def create_post():
     body = data.get('body')
     image_url = data.get('image_url')
 
+
+    current_user = token_auth.current_user()
     # Create a new post instance with the data
-    new_post = Post(title=title, body=body, image_url=image_url, user_id=2)
+    new_post = Post(title=title, body=body, image_url=image_url, user_id=current_user.id)
     # add to the database
     db.session.add(new_post)
     db.session.commit()
