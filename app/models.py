@@ -33,6 +33,7 @@ class User(db.Model, UserMixin):
     def check_password(self, password_guess):
         return check_password_hash(self.password, password_guess)
     
+    
 @login.user_loader
 def load_user(user_id):
     return db.session.get(User, user_id)
@@ -51,3 +52,13 @@ class Post(db.Model):
 
     def __repr__(self):
         return f"<Post {self.id}|{self.title}>"
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'body': self.body,
+            'image_url': self.image_url,
+            'date_created': self.date_created,
+            'user_id': self.user_id
+        }

@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
 
+
 #Create an instance of the Flask class
 app = Flask(__name__)
 
@@ -23,6 +24,10 @@ login = LoginManager(app)
 login.login_view = 'login'
 login.login_message = 'You need to be logged in to do that.'
 login.login_message_category = 'danger'
+
+# Register the api blueprint with our app
+from app.blueprints.api import api
+app.register_blueprint(api)
 
 # import all of the routes from the routes file into the current package
 from app import routes, models
