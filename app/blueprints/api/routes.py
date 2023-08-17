@@ -2,8 +2,19 @@ from . import api
 from app import db
 from app.models import Post
 from flask import request
+from .auth import basic_auth
 
 
+
+@api.route('/token')
+@basic_auth.login_required
+def get_token():
+    auth_user = basic_auth.current_user()
+    token = auth_user.get_token()
+    return {
+        'token': token,
+        'token_expiration': auth_user.token_expiration
+    }
 
 @api.route('/posts')
 def get_posts():
