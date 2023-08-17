@@ -21,6 +21,8 @@ login = LoginManager(app)
 
 # Customize login process - if not logged in, redirect to login page
 login.login_view = 'login'
+login.login_message = 'You need to be logged in to do that.'
+login.login_message_category = 'danger'
 
 # import all of the routes from the routes file into the current package
 from app import routes, models
