@@ -79,9 +79,26 @@ def edit_post(post_id):
     current_user = token_auth.current_user()
     if post.author != current_user:
         return {'error': 'You do not have permission to edit this post'}, 403
+    # Update the post with changes
     data = request.json
     for field in data:
         if field in {'title','body', 'image_url'}:
             setattr(post, field, data[field])
     db.session.commit()
     return post.to_dict()
+
+@api.route('/posts/<post_id>', methods=['DELETE'])
+@token_auth.login_required
+def delete_post(post_id):
+    # Get the post from the db
+    post = db.session.get(Post, post_id)
+    if post is None:
+        return {'error': f'Post with an ID of {post_id} does not exist!'}, 404
+    # Make sure post authenticated user is the post author
+    current_user = token_auth.current_user()
+    if post.author != current_user:
+        return {'error': "You do not have permission to delete this post"}, 403
+    # Delete Post
+    db.session.delete(post)
+    db.session.commit()
+    return {'succes': f"{post.title} has been deleted!"}
