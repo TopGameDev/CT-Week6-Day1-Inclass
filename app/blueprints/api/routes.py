@@ -101,4 +101,4 @@ def delete_post(post_id):
     # Delete Post
     db.session.delete(post)
     db.session.commit()
-    return {'succes': f"{post.title} has been deleted!"}
+    return {'succes': f"'{post.title}' has been deleted!"}
