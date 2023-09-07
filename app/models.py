@@ -22,7 +22,7 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(50), nullable=False, unique=True)
     password = db.Column(db.String(50), nullable=False, unique=True)
     date_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    posts = db.relationship('Post', backref='author', cascade="delete")
+    posts = db.relationship('Post', backref='author', cascade="delete") # The backref is how we create a list inside of another list with the User info (line 88-97)
     token = db.Column(db.String(32), index=True, unique=True)
     token_expiration = db.Column(db.DateTime)
 
@@ -56,10 +56,7 @@ class User(db.Model, UserMixin):
         self.token_expiration = datetime.utcnow() - timedelta(seconds=1)
         db.session.commit()
 
-    def to_dict(self):
-        self.token_expiration = datetime.utcnow() - timedelta(seconds=1)
-        db.session.commit()
-
+    # Create a dictionary out of the Data
     def to_dict(self):
         return {
             'id': self.id,
